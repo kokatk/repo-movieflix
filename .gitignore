@@ -39,6 +39,7 @@ gradle-app.setting
 *.sqlite
 *.h2.db
 *.mv.db
+db
 
 # Arquivos de configuração sensíveis
 application-*.yml
