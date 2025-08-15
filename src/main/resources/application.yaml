@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: movieflix
+  config:
+    import: optional:file:.env[dotenv]

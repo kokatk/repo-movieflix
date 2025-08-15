@@ -1,0 +1,31 @@
+# Arquivos de chave e certificados tratados como binário
+*.key binary
+*.pem binary
+*.crt binary
+*.cer binary
+*.der binary
+*.p12 binary
+*.pfx binary
+
+# Arquivos de banco de dados tratados como binário
+*.db binary
+*.sqlite binary
+*.h2.db binary
+*.mv.db binary
+
+
+# Arquivos de backup e dumps tratados como binário
+*.sql binary
+*.dump binary
+*.backup binary
+
+# Evita conversões de fim de linha em scripts
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# Garante que arquivos de configuração mantenham EOL consistente
+*.yml text eol=lf
+*.yaml text eol=lf
+*.properties text eol=lf
+/mvnw text eol=lf
+*.cmd text eol=crlf
