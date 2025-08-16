@@ -46,7 +46,10 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Category>> getIdCategory(@PathVariable Long id){
         Optional<Category> category = categoryService.findIdCategory(id);
-        return ResponseEntity.ok(category);
+        if(category.isPresent()){
+            return ResponseEntity.ok(category);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
