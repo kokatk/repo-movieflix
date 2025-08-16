@@ -1,8 +1,9 @@
 package com.movieflix.controller;
 
 import java.util.List;
-import java.util.Optional;
 
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.movieflix.DTOrequest.CategoryRequest;
+import com.movieflix.DTOresponse.CategoryResponse;
+import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.model.Category;
 import com.movieflix.service.CategoryService;
 
@@ -32,37 +36,42 @@ public class CategoryController {
 
 
     @GetMapping()
-    public ResponseEntity<List<Category>> getAllCategories(){
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
         List<Category> categories = categoryService.findAllCategories();
-        return ResponseEntity.ok(categories);
+        List<CategoryResponse> list = categories.stream()
+        .map(CategoryMapper::toCategoryResponse)
+        .toList();
+
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping()
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        categoryService.createdCategory(category);
-        return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
+        Category newCategory = CategoryMapper.toCategory(request);
+        Category createdCategory = categoryService.createdCategory(newCategory);
+        return ResponseEntity.status(HttpStatus.CREATED)
+        .body(CategoryMapper.toCategoryResponse(createdCategory));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Category>> getIdCategory(@PathVariable Long id){
-        Optional<Category> category = categoryService.findIdCategory(id);
-        if(category.isPresent()){
-            return ResponseEntity.ok(category);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryResponse> getIdCategory(@PathVariable Long id){
+        return categoryService.findIdCategory(id)
+        .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
+        .orElse(ResponseEntity.notFound().build());
+        
     }
 
     @DeleteMapping("/{id}")
-    public void deletedCategory(@PathVariable Long id) {
+    public ResponseEntity<Void> deletedCategory(@PathVariable Long id) {
         categoryService.deletedCategory(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updatedCategory(@PathVariable Long id, @Valid @RequestBody Category category){
-        Optional<Category> updated = categoryService.updateCategory(id, category);
-        if (updated.isPresent()){
-            return ResponseEntity.ok(updated.get());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryResponse> updatedCategory(@PathVariable Long id, @Valid @RequestBody Category request){
+        return categoryService.updateCategory(id, request)
+        .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
+        .orElse(ResponseEntity.notFound().build());
+    
     }
 }
