@@ -47,10 +47,8 @@ public class CategoryController {
 
     @PostMapping()
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
-        Category newCategory = CategoryMapper.toCategory(request);
-        Category createdCategory = categoryService.createdCategory(newCategory);
-        return ResponseEntity.status(HttpStatus.CREATED)
-        .body(CategoryMapper.toCategoryResponse(createdCategory));
+        Category createdCategory = categoryService.createdCategory(CategoryMapper.toCategory(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponse(createdCategory));
     }
 
     @GetMapping("/{id}")

@@ -46,10 +46,8 @@ public class StreamingController {
 
     @PostMapping()
     public ResponseEntity<StreamingResponse> createStreaming(@RequestBody StreamingRequest request) {
-        Streaming newStreaming = StreamingMapper.toStreaming(request);
-        Streaming createdStreaming = StreamingService.createdStreaming(newStreaming);
-        return ResponseEntity.status(HttpStatus.CREATED)
-        .body(StreamingMapper.toStreamingResponse(createdStreaming));
+        Streaming createdStreaming = StreamingService.createdStreaming(StreamingMapper.toStreaming(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toStreamingResponse(createdStreaming));
     }
 
     @GetMapping("/{id}")
