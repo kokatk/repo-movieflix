@@ -40,7 +40,7 @@ public class Movie {
 
 
     @Column(name = "release_date")
-    private LocalDate releasDate;
+    private LocalDate releaseDate;
 
     private double rating;
 
@@ -64,5 +64,5 @@ public class Movie {
         joinColumns = @JoinColumn(name = "movie_id"),
         inverseJoinColumns = @JoinColumn(name = "streaming_id")
     )
-    private List<Streaming> streaming;
+    private List<Streaming> streamings;
 }
