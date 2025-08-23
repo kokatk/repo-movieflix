@@ -32,6 +32,10 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+    public List<Movie> findByCategory(Long categoryId){
+        return movieRepository.findMovieByCategories(List.of(Category.builder().id(categoryId).build()));
+    }
+
     public Optional<Movie> findById(Long id){
         return movieRepository.findById(id);
     }
@@ -70,5 +74,9 @@ public class MovieService {
             return Optional.of(movie);
         }
         return Optional.empty();
+    }
+
+    public void delete(Long id) {
+        movieRepository.deleteById(id);
     }
 }
