@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
 @Builder
 public record MovieRequest(
+                @NotEmpty(message = "Título do filme é obrigatório.")
                 String title,
                 String description,
                 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

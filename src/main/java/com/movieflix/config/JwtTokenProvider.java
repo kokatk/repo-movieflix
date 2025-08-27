@@ -16,7 +16,7 @@ import java.util.Optional;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${movieflix.security.secret}")
+    @Value("${MOVIEFLIX_SECURITY_SECRET}")
     private String secret;
 
     public String generateToken(User user) {
